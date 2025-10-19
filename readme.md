@@ -46,7 +46,14 @@ Terminal 2:
 ```bash
 cd dashboard
 python app.py
+
+or
+
+python -m dashboard.app
+
 ```
+
+from root
 
 Then open: **http://localhost:5000**
 
