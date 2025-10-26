@@ -214,3 +214,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Ignore data and logs
+data/
+!data/folder_structure.md
+
+# Ignore databases
+*.db
+
+# Ignore models (if large or generated)
+models/*.pkl

@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import Dict, Optional, Tuple
 import logging
 
-from preprocessing import SignalPreprocessor, FeatureExtractor, STALTACalculator
+from src.preprocessing import SignalPreprocessor, FeatureExtractor, STALTACalculator
 
 logger = logging.getLogger(__name__)
 

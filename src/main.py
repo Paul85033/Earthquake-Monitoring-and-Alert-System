@@ -10,7 +10,8 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent))
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 from config import (
     SENSOR_CONFIG, DETECTION_CONFIG, ALERT_CONFIG, 

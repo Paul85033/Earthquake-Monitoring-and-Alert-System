@@ -33,6 +33,7 @@ SENSOR_CONFIG = {
 
 # Detection configuration
 DETECTION_CONFIG = {
+    "sample_rate": 100,
     'sta_window': 1.0,  # Short-term average window (seconds)
     'lta_window': 30.0,  # Long-term average window (seconds)
     'trigger_ratio': 4.0,  # STA/LTA trigger threshold
