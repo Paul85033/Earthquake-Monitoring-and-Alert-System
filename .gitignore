@@ -215,9 +215,15 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Ignore data and logs
-data/
+# Ignore all data by default
+data/*
+
+# But keep the folder itself
+!data/
+
+# Keep the documentation file
 !data/folder_structure.md
+
 
 # Ignore databases
 *.db
