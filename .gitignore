@@ -227,6 +227,7 @@ data/*
 
 # Ignore databases
 *.db
+data/seismic_log.db
 
 # Ignore models (if large or generated)
 models/*.pkl
