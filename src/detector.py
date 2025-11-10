@@ -9,7 +9,8 @@ from datetime import datetime
 from typing import Dict, Optional, Tuple
 import logging
 
-from src.preprocessing import SignalPreprocessor, FeatureExtractor, STALTACalculator
+from preprocessing import SignalPreprocessor, FeatureExtractor, STALTACalculator
+from location_estimator import LocationEstimator
 
 logger = logging.getLogger(__name__)
 
@@ -17,10 +18,10 @@ logger = logging.getLogger(__name__)
 class EarthquakeDetector:
     """
     Integrated earthquake detection system
-    Combines STA/LTA triggering with ML validation
+    Combines STA/LTA triggering with ML validation and location estimation
     """
     
-    def __init__(self, config: dict, model_path: Optional[str] = None):
+    def __init__(self, config: dict, model_path: Optional[str] = None, location_config: dict = None):
         self.config = config
         
         # Initialize components
@@ -39,6 +40,16 @@ class EarthquakeDetector:
             lta_window=config['lta_window'],
             sample_rate=self.sample_rate
         )
+        
+        # Initialize location estimator
+        self.location_estimator = None
+        if location_config and location_config.get('enable_location', False):
+            station_location = (
+                location_config['station_latitude'],
+                location_config['station_longitude']
+            )
+            self.location_estimator = LocationEstimator(station_location)
+            logger.info("Location estimation enabled")
         
         # Data buffer (for LTA calculation)
         lta_samples = int(config['lta_window'] * self.sample_rate)
@@ -172,6 +183,15 @@ class EarthquakeDetector:
                 'energy': features['energy']
             }
             
+            # Estimate location if enabled
+            if self.location_estimator:
+                location_info = self.location_estimator.estimate_location(
+                    features={'magnitude': magnitude, **features},
+                    waveform=filtered,
+                    sample_rate=self.sample_rate
+                )
+                event['location'] = location_info
+            
             self.detected_events.append(event)
             self.stats['confirmed_events'] += 1
             
@@ -254,6 +274,17 @@ class EarthquakeDetector:
         logger.info(f"Duration:   {event['duration']:.1f}s")
         logger.info(f"Confidence: {event['confidence']:.1%}")
         logger.info(f"PGA:        {event['pga']:.3f} m/s²")
+        
+        # Log location if available
+        if 'location' in event:
+            loc = event['location']
+            logger.info(f"Distance:   {loc['distance_km']:.1f} km")
+            logger.info(f"Location:   {loc['epicenter_lat']:.4f}°, {loc['epicenter_lon']:.4f}°")
+            logger.info(f"Depth:      {loc['depth_km']:.1f} km")
+            logger.info(f"Probability: {loc['probability']:.1%}")
+            if loc.get('nearest_zone'):
+                logger.info(f"Near:       {loc['nearest_zone']}")
+        
         logger.info("=" * 70)
     
     def get_statistics(self) -> Dict:

@@ -98,6 +98,164 @@ canvas {
   max-height: 300px;
 }
 
+/* Map */
+.map-container {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.map-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.map-controls {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.map-btn {
+  padding: 10px 20px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.map-btn:hover {
+  background: #f0f0f0;
+}
+
+.map-btn.active {
+  background: #667eea;
+  color: white;
+}
+
+.map-legend {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.legend-section {
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.legend-section strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  margin: 5px 0;
+}
+
+.legend-marker {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #333;
+}
+
+.legend-marker.prediction-high {
+  background: repeating-linear-gradient(
+    45deg,
+    #ff4444,
+    #ff4444 5px,
+    #ff8888 5px,
+    #ff8888 10px
+  );
+  border-color: #ff4444;
+}
+
+.legend-marker.prediction-elevated {
+  background: repeating-linear-gradient(
+    45deg,
+    #ffaa00,
+    #ffaa00 5px,
+    #ffcc66 5px,
+    #ffcc66 10px
+  );
+  border-color: #ffaa00;
+}
+
+.legend-marker.prediction-moderate {
+  background: repeating-linear-gradient(
+    45deg,
+    #4444ff,
+    #4444ff 5px,
+    #8888ff 5px,
+    #8888ff 10px
+  );
+  border-color: #4444ff;
+}
+
+.legend-marker.prediction-low {
+  background: repeating-linear-gradient(
+    45deg,
+    #44ff44,
+    #44ff44 5px,
+    #88ff88 5px,
+    #88ff88 10px
+  );
+  border-color: #44ff44;
+}
+
+/* Risk level badges */
+.risk-high {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.risk-elevated {
+  background: #fff3cd;
+  color: #856404;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.risk-moderate {
+  background: #d1ecf1;
+  color: #0c5460;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.risk-low {
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
 /* Table */
 .table-container {
   background: white;

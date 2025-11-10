@@ -36,6 +36,12 @@ class SeismicDatabase:
                 mean_freq REAL,
                 dominant_freq REAL,
                 energy REAL,
+                epicenter_lat REAL,
+                epicenter_lon REAL,
+                distance_km REAL,
+                depth_km REAL,
+                location_probability REAL,
+                nearest_zone TEXT,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
         ''')
@@ -72,11 +78,16 @@ class SeismicDatabase:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
+        # Extract location info if available
+        location = event.get('location', {})
+        
         cursor.execute('''
             INSERT INTO events (
                 timestamp, magnitude, duration, confidence,
-                pga, mean_freq, dominant_freq, energy
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                pga, mean_freq, dominant_freq, energy,
+                epicenter_lat, epicenter_lon, distance_km, depth_km,
+                location_probability, nearest_zone
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             event['timestamp'],
             event['magnitude'],
@@ -85,7 +96,13 @@ class SeismicDatabase:
             event['pga'],
             event.get('mean_freq', 0),
             event.get('dominant_freq', 0),
-            event.get('energy', 0)
+            event.get('energy', 0),
+            location.get('epicenter_lat'),
+            location.get('epicenter_lon'),
+            location.get('distance_km'),
+            location.get('depth_km'),
+            location.get('probability'),
+            location.get('nearest_zone')
         ))
         
         conn.commit()

@@ -12,9 +12,11 @@ sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 from src.config import DATABASE_PATH, DASHBOARD_CONFIG
 from src.database import SeismicDatabase
+from src.multi_location import MultiLocationPredictor
 
 app = Flask(__name__)
 db = SeismicDatabase(str(DATABASE_PATH))
+predictor = MultiLocationPredictor()
 
 
 @app.route('/')
@@ -40,6 +42,32 @@ def get_today_events():
     
     events = db.get_events_by_date(start, end)
     return jsonify(events)
+
+
+@app.route('/api/predictions')
+def get_predictions():
+    """Get earthquake predictions for all monitored regions"""
+    
+    # Get most recent detected event (for triggering analysis)
+    recent_events = db.get_recent_events(1)
+    latest_event = recent_events[0] if recent_events else None
+    
+    # Generate predictions
+    predictions = predictor.predict_all_locations(latest_event)
+    
+    return jsonify(predictions)
+
+
+@app.route('/api/predictions/<region_id>')
+def get_region_prediction(region_id):
+    """Get prediction for specific region"""
+    predictions = predictor.predict_all_locations()
+    
+    for pred in predictions:
+        if pred['region_id'] == region_id:
+            return jsonify(pred)
+    
+    return jsonify({'error': 'Region not found'}), 404
 
 
 @app.route('/api/stats')

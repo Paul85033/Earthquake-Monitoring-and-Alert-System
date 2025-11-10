@@ -32,16 +32,26 @@ SENSOR_CONFIG = {
 }
 
 # Detection configuration
+
 DETECTION_CONFIG = {
-    "sample_rate": 100,
-    'sta_window': 1.0,  # Short-term average window (seconds)
-    'lta_window': 30.0,  # Long-term average window (seconds)
-    'trigger_ratio': 4.0,  # STA/LTA trigger threshold
-    'detrigger_ratio': 1.5,  # STA/LTA detrigger threshold
-    'ml_confidence_threshold': 0.7,  # Minimum confidence for ML detection
-    'magnitude_threshold': 3.0,  # Minimum magnitude to alert
-    'bandpass_low': 0.5,  # Low frequency cutoff (Hz)
-    'bandpass_high': 10.0,  # High frequency cutoff (Hz)
+    "sample_rate": 100,                # Hz — depends on your sensor (e.g. 50, 100, 200)
+    "bandpass_low": 0.5,               # Hz — lower frequency cutoff for filtering
+    "bandpass_high": 20.0,             # Hz — upper frequency cutoff for filtering
+    "sta_window": 1.0,                 # seconds — short-term average window
+    "lta_window": 10.0,                # seconds — long-term average window
+    "trigger_ratio": 3.5,              # STA/LTA threshold to trigger event
+    "detrigger_ratio": 1.5,            # STA/LTA threshold to end event
+    "ml_confidence_threshold": 0.7     # ML model confidence threshold
+}
+
+
+# Location estimation configuration
+LOCATION_CONFIG = {
+    'enable_location': True,  # Enable location estimation
+    'station_latitude': 34.0522,  # Station location (default: Los Angeles)
+    'station_longitude': -118.2437,
+    'p_wave_velocity': 6.0,  # km/s
+    's_wave_velocity': 3.5,  # km/s
 }
 
 # Alert configuration

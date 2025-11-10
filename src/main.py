@@ -10,11 +10,10 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 # Add parent directory to path
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(Path(__file__).parent))
 
 from config import (
-    SENSOR_CONFIG, DETECTION_CONFIG, ALERT_CONFIG, 
+    SENSOR_CONFIG, DETECTION_CONFIG, ALERT_CONFIG, LOCATION_CONFIG,
     LOGGING_CONFIG, MODEL_PATH, DATABASE_PATH
 )
 from sensor_reader import create_sensor
@@ -89,7 +88,7 @@ def main():
         
         # Detector
         model_path = str(MODEL_PATH) if MODEL_PATH.exists() else None
-        detector = EarthquakeDetector(DETECTION_CONFIG, model_path)
+        detector = EarthquakeDetector(DETECTION_CONFIG, model_path, LOCATION_CONFIG)
         
         # Alert system
         alert_system = AlertSystem(ALERT_CONFIG)

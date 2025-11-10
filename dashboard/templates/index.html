@@ -9,6 +9,11 @@
       href="{{ url_for('static', filename='css/style.css') }}"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
   <body>
     <div class="container">
@@ -37,6 +42,78 @@
         </div>
       </div>
 
+      <!-- Map Section -->
+      <div class="map-container">
+        <h2>📍 Earthquake Locations & Predictions</h2>
+        <div class="map-controls">
+          <button id="toggleDetections" class="map-btn active">
+            🔴 Detected Events
+          </button>
+          <button id="togglePredictions" class="map-btn active">
+            🔮 Predictions
+          </button>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <div class="legend-section">
+            <strong>Detected Events:</strong>
+            <div class="legend-item">
+              <span class="legend-marker" style="background: #ff4444"></span>
+              High Probability (>70%)
+            </div>
+            <div class="legend-item">
+              <span class="legend-marker" style="background: #ffaa00"></span>
+              Medium Probability (50-70%)
+            </div>
+            <div class="legend-item">
+              <span class="legend-marker" style="background: #44ff44"></span>
+              Low Probability (<50%)
+            </div>
+          </div>
+          <div class="legend-section">
+            <strong>Predictions:</strong>
+            <div class="legend-item">
+              <span class="legend-marker prediction-high"></span> High Risk
+              (>70%)
+            </div>
+            <div class="legend-item">
+              <span class="legend-marker prediction-elevated"></span> Elevated
+              Risk (40-70%)
+            </div>
+            <div class="legend-item">
+              <span class="legend-marker prediction-moderate"></span> Moderate
+              Risk (20-40%)
+            </div>
+            <div class="legend-item">
+              <span class="legend-marker prediction-low"></span> Low Risk (<20%)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predictions Table -->
+      <div class="table-container">
+        <h2>🔮 Regional Earthquake Predictions</h2>
+        <table id="predictionsTable">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Risk Level</th>
+              <th>24h Probability</th>
+              <th>7d Probability</th>
+              <th>30d Probability</th>
+              <th>Est. Magnitude</th>
+              <th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody id="predictionsTableBody">
+            <tr>
+              <td colspan="7" class="loading">Loading predictions...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <!-- Charts -->
       <div class="charts-grid">
         <div class="chart-container">
@@ -59,12 +136,14 @@
               <th>Magnitude</th>
               <th>Duration</th>
               <th>Confidence</th>
-              <th>PGA</th>
+              <th>Location</th>
+              <th>Distance</th>
+              <th>Probability</th>
             </tr>
           </thead>
           <tbody id="eventsTableBody">
             <tr>
-              <td colspan="5" class="loading">Loading events...</td>
+              <td colspan="7" class="loading">Loading events...</td>
             </tr>
           </tbody>
         </table>
