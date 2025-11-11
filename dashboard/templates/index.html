@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth.css') }}"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <link
       rel="stylesheet"
@@ -16,7 +20,37 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
   <body>
-    <div class="container">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="{{ url_for('index') }}" class="nav-brand">
+          🌍 Seismic AI Detector
+        </a>
+        <div class="nav-links">
+          <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
+          {% if session.user %}
+          <a href="{{ url_for('profile') }}" class="nav-link"
+            >👤 {{ session.user.username }}</a
+          >
+          <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+          {% else %}
+          <a href="{{ url_for('signup') }}" class="nav-link">Sign Up</a>
+          <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" style="margin-top: 80px">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
       <header>
         <h1>🌍 Seismic AI Detector</h1>
         <p class="subtitle">Real-Time Earthquake Monitoring System</p>

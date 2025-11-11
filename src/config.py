@@ -3,7 +3,10 @@ Configuration file for Seismic AI Detector
 """
 
 import os
+import dotenv
 from pathlib import Path
+
+dotenv.load_dotenv()
 
 # Base paths
 BASE_DIR = Path(__file__).parent.parent
@@ -62,6 +65,8 @@ ALERT_CONFIG = {
     'enable_database': True,
     'enable_webhook': False,
     
+    'base_url': os.getenv('BASE_URL', 'http://localhost:5000'),
+    
     # Email settings
     'email_smtp_server': 'smtp.gmail.com',
     'email_smtp_port': 587,
@@ -105,4 +110,11 @@ TRAINING_CONFIG = {
     'n_estimators': 100,
     'max_depth': 10,
     'min_samples_split': 5,
+}
+ALERT_CONFIG = {
+    'enable_email': True,  # Must be True for user alerts
+    'email_smtp_server': 'smtp.gmail.com',
+    'email_smtp_port': 587,
+    'email_sender': os.getenv('ALERT_EMAIL_SENDER'),
+    'email_password': os.getenv('ALERT_EMAIL_PASSWORD'),
 }

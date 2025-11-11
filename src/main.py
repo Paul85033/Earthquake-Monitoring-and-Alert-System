@@ -20,6 +20,8 @@ from sensor_reader import create_sensor
 from detector import EarthquakeDetector
 from alert_system import AlertSystem
 from database import SeismicDatabase
+from auth import UserManager
+from alerts import UserAlertSystem
 
 # Global flag for graceful shutdown
 running = True
@@ -86,12 +88,18 @@ def main():
         # Database
         db = SeismicDatabase(str(DATABASE_PATH))
         
+        # User manager
+        user_manager = UserManager(str(DATABASE_PATH))
+        
         # Detector
         model_path = str(MODEL_PATH) if MODEL_PATH.exists() else None
         detector = EarthquakeDetector(DETECTION_CONFIG, model_path, LOCATION_CONFIG)
         
         # Alert system
         alert_system = AlertSystem(ALERT_CONFIG)
+        
+        # User alert system
+        user_alert_system = UserAlertSystem(ALERT_CONFIG, user_manager)
         
         # Sensor
         sensor = create_sensor(SENSOR_CONFIG)
@@ -134,8 +142,11 @@ def main():
                 # Log to database
                 db.log_event(event)
                 
-                # Send alerts
+                # Send system alerts
                 alert_system.send_alert(event)
+                
+                # Send user alerts
+                user_alert_system.check_and_alert_users(event)
             
             # Status update every 10 seconds
             current_time = time.time()

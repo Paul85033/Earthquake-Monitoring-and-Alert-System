@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Seismic AI Detector</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="{{ url_for('index') }}" class="nav-brand">
+          🌍 Seismic AI Detector
+        </a>
+        <div class="nav-links">
+          <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+          <a href="{{ url_for('profile') }}" class="nav-link active"
+            >👤 Profile</a
+          >
+          <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" style="margin-top: 80px">
+      <div class="profile-header">
+        <h1>👤 User Profile</h1>
+        <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <h2>📧 Account Information</h2>
+          <div class="info-row">
+            <span class="label">Username:</span>
+            <span class="value">{{ user.username }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Email:</span>
+            <span class="value">{{ user.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Location:</span>
+            <span class="value">{{ user.city }}, {{ user.country }}</span>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <h2>Alert Settings</h2>
+          <div class="info-row">
+            <span class="label">Email Alerts:</span>
+            <span class="value status-active">✅ Enabled</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Alert Radius:</span>
+            <span class="value">100 km</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Min Magnitude:</span>
+            <span class="value">3.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert-history">
+        <h2>Recent Alert History</h2>
+        {% if alerts %}
+        <table class="alerts-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Magnitude</th>
+              <th>Distance</th>
+              <th>Alert Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for alert in alerts %}
+            <tr>
+              <td>{{ alert.sent_at }}</td>
+              <td>
+                <span
+                  class="magnitude {% if alert.event_magnitude >= 5 %}magnitude-high{% elif alert.event_magnitude >= 4 %}magnitude-medium{% else %}magnitude-low{% endif %}"
+                >
+                  M{{ "%.1f"|format(alert.event_magnitude) }}
+                </span>
+              </td>
+              <td>{{ "%.1f"|format(alert.event_distance_km) }} km</td>
+              <td>{{ alert.alert_type }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">
+          No alerts sent yet. You'll receive notifications when earthquakes are
+          detected near your location.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
