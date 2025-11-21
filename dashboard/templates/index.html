@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seismic AI Detector - Dashboard</title>
+    <title>Home - SeismoAlert</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
@@ -24,7 +24,10 @@
     <nav class="navbar">
       <div class="nav-container">
         <a href="{{ url_for('index') }}" class="nav-brand">
-          🌍 Seismic AI Detector
+          <div class="logo-flex">
+            <img src="/static/assets/logo.png" class="logo" />
+            <span>SeismoAlert</span>
+          </div>
         </a>
         <div class="nav-links">
           <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
@@ -52,8 +55,13 @@
       {% endif %} {% endwith %}
 
       <header>
-        <h1>🌍 Seismic AI Detector</h1>
-        <p class="subtitle">Real-Time Earthquake Monitoring System</p>
+        <h1>
+          <div class="logo-flex">
+            <img src="/static/assets/logo.png" class="logo" />
+            <span>SeismoAlert</span>
+          </div>
+        </h1>
+        <p class="subtitle">Earthquake Monitoring & Alert System</p>
       </header>
 
       <!-- Stats Cards -->
@@ -78,13 +86,13 @@
 
       <!-- Map Section -->
       <div class="map-container">
-        <h2>📍 Earthquake Locations & Predictions</h2>
+        <h2>Earthquake Locations & Predictions</h2>
         <div class="map-controls">
           <button id="toggleDetections" class="map-btn active">
-            🔴 Detected Events
+            Detected Events
           </button>
           <button id="togglePredictions" class="map-btn active">
-            🔮 Predictions
+            Predicted Events
           </button>
         </div>
         <div id="map"></div>
@@ -127,7 +135,7 @@
 
       <!-- Predictions Table -->
       <div class="table-container">
-        <h2>🔮 Regional Earthquake Predictions</h2>
+        <h2>Regional Earthquake Predictions</h2>
         <table id="predictionsTable">
           <thead>
             <tr>
